@@ -1,6 +1,6 @@
 package tests;
 
-import io.qameta.allure.Epic;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
 import lib.ApiCoreRequests;
 import lib.Assertions;
@@ -19,6 +19,10 @@ public class UserDeleteTest extends BaseTestCase {
     String header;
     int userIdOnAuth;
     @Epic("Тесты на удаление пользователя")
+    @Feature("Удаление пользователя")
+    @Owner("Elena Lukacheva")
+    @Issue("Ex19: Теги Allure")
+    @Severity(SeverityLevel.BLOCKER)
     @Test
     @DisplayName("Удалить пользователя по ID 2")
     public void testDeleteUserId2(){
@@ -44,6 +48,9 @@ public class UserDeleteTest extends BaseTestCase {
         Assertions.assertJsonHasField(requestDel, "error");
     }
     @Test
+    @Owner("Elena Lukacheva")
+    @Issue("Ex19: Теги Allure")
+    @Severity(SeverityLevel.CRITICAL)
     @DisplayName("Создать пользователя авторизоваться из-под него удалить затем попробовать получить его данные по ID и убедитьсячто пользователь действительно удален")
     public void testDeleteUser(){
         //генерация и создание
@@ -76,6 +83,9 @@ public class UserDeleteTest extends BaseTestCase {
         Assertions.assertResponseTextEquals(responseGet,"User not found");
     }
     @Test
+    @Owner("Elena Lukacheva")
+    @Issue("Ex19: Теги Allure")
+    @Severity(SeverityLevel.BLOCKER)
     @DisplayName("Попробовать удалить пользователя, будучи авторизованными другим пользователем")
     public void testDelUserNoAuth(){
         Map<String, String> newUser = new HashMap<>();

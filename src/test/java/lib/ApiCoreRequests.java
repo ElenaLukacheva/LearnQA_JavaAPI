@@ -1,5 +1,6 @@
 package lib;
 
+import io.qameta.allure.Link;
 import io.qameta.allure.Step;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.http.Header;
@@ -65,6 +66,7 @@ public class ApiCoreRequests {
                 .andReturn();
     }
    @Step("POST-запрос на Авторизацию")
+   @Link(name = "Auth", url = "https://playground.learnqa.ru/api/user/login")
     public Response makePostRquestAuth(Map<String, String> authData) {
         return given()
                 .filter(new AllureRestAssured())
