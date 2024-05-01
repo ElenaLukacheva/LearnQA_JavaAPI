@@ -19,6 +19,15 @@ public class ApiCoreRequests {
                 .put(url)
                 .andReturn();
         }
+        @Step("DELETE-запрос")
+    public Response makeDeletRequestWithAuth(String url, int value, String token, String cookie) {
+        return given()
+                .filter(new AllureRestAssured())
+                .header(new Header("x-csrf-token", token))
+                .cookie("auth_sid", cookie)
+                .delete(url + value)
+                .andReturn();
+        }
     @Step("PUT-запрос c token и cookie")
     public Response makePutRequestDetails(String url, Map<String, String> userData, String token, String cookie) {
         return given()
@@ -55,15 +64,24 @@ public class ApiCoreRequests {
                 .post(url)
                 .andReturn();
     }
-      @Step("POST-запрос c cookie и token")
-      public Response makePostRquestWithDetails(String url, Map<String, String> authData, String token, String cookie) {
-          return given()
+   @Step("POST-запрос на Авторизацию")
+    public Response makePostRquestAuth(Map<String, String> authData) {
+        return given()
+                .filter(new AllureRestAssured())
+                .body(authData)
+                .post("https://playground.learnqa.ru/api/user/login")
+                .andReturn();
+    }
+    @Step("POST-запрос c cookie и token")
+    public Response makePostRquestWithDetails(String url, Map<String, String> authData, String token, String cookie) {
+        return given()
                   .filter(new AllureRestAssured())
                   .header("x-csrf-token", token)
                   .cookie("auth_sid", cookie)
                   .body(authData)
                   .post(url)
                   .andReturn();
+
       }
 
 @Step("GET-запрос с token и cookie")
