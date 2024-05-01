@@ -10,8 +10,35 @@ import java.util.Map;
 import static io.restassured.RestAssured.given;
 
 public class ApiCoreRequests {
+    @Step("GЕT-запрос c выводом статус кода ответа")
+    public Response makeGetRequestStatusCode(String url) {
+        Response response = given()
+                .filter(new AllureRestAssured())
+                .get(url)
+                .andReturn();
+        System.out.println("Статус код: " + response.statusCode());
+        return response;
+    }
+    @Step("GЕT-запрос")
+    public Response makeGetRequest(String url) {
+        return given()
+                .filter(new AllureRestAssured())
+                .get(url)
+                .andReturn();
+    }
+
+    @Step("POST-запрос")
+    public Response makePostRquest(String url, Map<String, String> authData) {
+        return given()
+                .filter(new AllureRestAssured())
+                .body(authData)
+                //.log().all()
+                .post(url)
+                .andReturn();
+
+    }
 @Step("GET-запрос с token и cookie")
-    public Response makeGetRquest(String url, String token, String cookie) {
+    public Response makeGetRquestDetails(String url, String token, String cookie) {
     return given()
             .filter(new AllureRestAssured())
             .header(new Header("x-csrf-token", token))
@@ -35,15 +62,5 @@ public class ApiCoreRequests {
             .get(url)
             .andReturn();
 }
-@Step("POST-запрос")
-    public Response makePostRquest(String url, Map<String, String> authData) {
-    return given()
-            .filter(new AllureRestAssured())
-            .body(authData)
-            .post(url)
-            .andReturn();
-
-}
-
 }
 
