@@ -12,6 +12,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserGetTest extends BaseTestCase {
+    String cookie;
+    String header;
+    int userId;
    private final ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
 
     @Test
@@ -21,11 +24,17 @@ public class UserGetTest extends BaseTestCase {
     userData.put("email","vinkotov@example.com" );
     userData.put("password", "1234");
 
-    Response responseAuth = apiCoreRequests
-            .makePostRquest("https://playground.learnqa.ru/api/user/login", userData);
+        Response responseAuth = apiCoreRequests
+                .makePostRquest("https://playground.learnqa.ru/api/user/login", userData);
+        this.cookie = this.getCookie(responseAuth,"auth_sid");
+        this.header = this.getHeader(responseAuth, "x-csrf-token");
 
     Response responseAuthAnotherUser = apiCoreRequests
-            .makeGetRequest("https://playground.learnqa.ru/api/user/96572");
+            .makeGetRquestDetails(
+                    "https://playground.learnqa.ru/api/user/96572",
+                    this.header,
+                    this.cookie
+            );
 
     Assertions.assertJsonHasField(responseAuthAnotherUser, "username");
     Assertions.assertJsonHasNoField(responseAuthAnotherUser, "firstName");
